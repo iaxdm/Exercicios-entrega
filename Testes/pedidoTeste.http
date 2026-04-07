@@ -1,0 +1,60 @@
+//Listar todos
+GET http://localhost:3000/api/pedidos
+
+###
+
+//Criar pedidos
+POST http://localhost:3000/api/pedidos
+Content-Type: application/json
+
+{
+    "itens":[
+        {
+            "produto_id": 1,
+            "quantidade": 2
+        },
+        {
+            "produto_id":2,
+            "quantidade":1
+        },
+        {
+            "produto_id":3,
+            "quantidade":4
+        }
+    ]
+}
+
+###
+
+//Deletar pedidos
+
+DELETE http://localhost:3000/api/pedidos/20
+
+###
+
+//Atualizar pedidos
+PATCH  http://localhost:3000/api/pedidos/22
+Content-Type: application/json
+
+{
+    "status": "finalizado"
+}
+
+###
+
+//Atualizar todos os dados dos pedidos
+PUT http://localhost:3000/api/pedidos/21
+Content-Type: application/json
+
+{
+    "itens": [
+        {
+            "produto_id": 1,
+            "quantidade": 3
+        },
+        {
+            "produto_id": 2,
+            "quantidade": 1
+        }
+    ]
+} 

@@ -1,0 +1,23 @@
+# 1. Dependências (A pasta mais pesada do mundo)
+node_modules/
+
+# 2. Compilação (Arquivos que o TS gera a partir do seu código)
+dist/
+build/
+*.tsbuildinfo
+
+# 3. Segurança e Configurações (Onde estão suas senhas do Banco)
+.env
+.env.local
+.env.*.local
+
+# 4. Logs (Registros de erros que só servem para o seu PC)
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# 5. Sistema Operacional (Arquivos invisíveis do Windows/Mac)
+.DS_Store
+Thumbs.db
