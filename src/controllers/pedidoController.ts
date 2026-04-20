@@ -15,6 +15,18 @@ export const getPedidos = async (req: Request, res: Response) => {
   }
 };
 
+export const getPedidosRelatorio = async (req: Request, res: Response) => {
+  try {
+    const resultado = await PedidoModel.getFaturamentoTotal();
+    return res.status(200).json({ resultado });
+  } catch (error: unknown) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Ocorreu um erro inesperado ao listar os pedidos" });
+  }
+};
+
 export const postPedido = async (req: Request, res: Response) => {
   const itens: INovoItemPedido[] = req.body.itens;
   if (!itens || !Array.isArray(itens)) {

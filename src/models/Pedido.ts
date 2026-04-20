@@ -83,7 +83,7 @@ export const PedidoModel = {
     const query = `SELECT p.id as pedido_id, p.data_criacao, p.status, ip.id as item_id,
         ip.produto_id, ip.quantidade, pr.nome as produto_nome, pr.preco as prodduto_preco
         FROM pedidos p LEFT JOIN itens_pedido ip ON p.id = ip.pedido_id
-        LEFT JOIN produtos pr ON ip.produto_id = p.id ORDER BY p.data_criacao DESC`;
+        LEFT JOIN produtos pr ON ip.produto_id = pr.id ORDER BY p.data_criacao DESC`;
 
     const { rows } = await pool.query<IPedidoRow>(query);
     const listaPedidos: IPedido[] = [];
@@ -114,7 +114,43 @@ export const PedidoModel = {
     return listaPedidos;
   },
 
+  async getFaturamentoTotal(): Promise<IPedido[]> {
+    const query = `SELECT SUM(produtos.preco * itens_pedido.quantidade) AS total, pedidos.id AS numero_pedido
+                  FROM produtos JOIN itens_pedido ON produtos.id = itens_pedido.produto_id
+                  JOIN pedidos ON itens_pedido.pedido_id = pedidos.id WHERE pedidos.status = 'finalizado'
+                  GROUP BY pedidos.id;`;
+
+    const { rows } = await pool.query(query);
+    return rows;
+  },
+
   async deletarPedido(id: number): Promise<boolean> {
+    const client = await pool.connect();
+    try {
+      await client.query("BEGIN");
+      const queryItens =
+        "SELECT produto_id, quantidade FROM itens_pedido where pedido_id = $1";
+      const { rows } = await client.query(queryItens, [id]);
+      for (const row of rows) {
+        await client.query(
+          "UPDATE produtos SET estoque = estoque + $1 WHERE id = $2",
+          [row.quantidade, row.produto_id]
+        );
+      }
+      const result = await client.query("DELETE FROM pedidos WHERE id = $1", [
+        id,
+      ]);
+      await client.query("COMMIT");
+      return (result.rowCount ?? 0) > 0;
+    } catch (error) {
+      await client.query("ROLLBACK");
+      throw error;
+    } finally {
+      client.release();
+    }
+  },
+
+  async deletarEstornarPedido(id: number): Promise<boolean> {
     const client = await pool.connect();
     try {
       await client.query("BEGIN");

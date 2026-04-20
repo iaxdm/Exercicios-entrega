@@ -11,15 +11,15 @@ export const getProdutos = async (req: Request, res: Response) => {
   }
 };
 
-export const getProdutosPorId = async (req: Request, res: Response) =>{
+export const getProdutosPorId = async (req: Request, res: Response) => {
   const id = Number(req.params.id);
   try {
-    const produto =await ProdutoModel.buscarPorId(id);
-    return res.json(produto)
+    const produto = await ProdutoModel.buscarPorId(id);
+    return res.json(produto);
   } catch {
-    res.status(500).json({error: "Erro ao buscar o Produto"})
+    res.status(500).json({ error: "Erro ao buscar o Produto" });
   }
-}
+};
 
 export const criarProduto = async (req: Request, res: Response) => {
   if (!req.body.nome || !req.body.preco) {
@@ -34,39 +34,37 @@ export const criarProduto = async (req: Request, res: Response) => {
 };
 
 export const atualizarProduto = async (req: Request, res: Response) => {
-  const id = Number (req.params.id)
+  const id = Number(req.params.id);
   try {
     const produtoAtual = await ProdutoModel.buscarPorId(id);
 
-    if(!produtoAtual){
-      return res.status(404).json({error: "Produto não encontrado"})
+    if (!produtoAtual) {
+      return res.status(404).json({ error: "Produto não encontrado" });
     }
 
     const dados = {
       nome: req.body.nome ?? produtoAtual.nome,
       preco: req.body.preco ?? produtoAtual.preco,
-      estoque: req. body.estoque ?? produtoAtual.estoque
-    }
+      estoque: req.body.estoque ?? produtoAtual.estoque,
+    };
 
     const atualizado = await ProdutoModel.atualizar(id, dados);
-    return res.json(atualizado)
-
+    return res.json(atualizado);
   } catch {
-    res.status(500).json({error: `Erro ao atualizar: ${error}`})
+    res.status(500).json({ error: `Erro ao atualizar: ${error}` });
   }
-}
+};
 
 export const deletarProduto = async (req: Request, res: Response) => {
-  const id = Number (req.params.id)
+  const id = Number(req.params.id);
   try {
     const deletado = await ProdutoModel.deletarProduto(id);
 
-    if(!deletado){
-      return res.status(404).json({message: "Produto não encontrado"})
+    if (!deletado) {
+      return res.status(404).json({ message: "Produto não encontrado" });
     }
-    res.status(204).send()
-
-  }catch (error){
-    res.status(500).json({error: `Erro ao deletar: ${error}`})
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: `Erro ao deletar: ${error}` });
   }
-}
+};

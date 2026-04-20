@@ -1,3 +1,4 @@
+
 //Listar todos
 GET http://localhost:3000/api/pedidos
 
@@ -10,16 +11,8 @@ Content-Type: application/json
 {
     "itens":[
         {
-            "produto_id": 1,
-            "quantidade": 2
-        },
-        {
             "produto_id":2,
-            "quantidade":1
-        },
-        {
-            "produto_id":3,
-            "quantidade":4
+            "quantidade":3
         }
     ]
 }
@@ -28,12 +21,12 @@ Content-Type: application/json
 
 //Deletar pedidos
 
-DELETE http://localhost:3000/api/pedidos/20
+DELETE http://localhost:3000/api/pedidos/2
 
 ###
 
 //Atualizar pedidos
-PATCH  http://localhost:3000/api/pedidos/22
+PATCH  http://localhost:3000/api/pedidos/3
 Content-Type: application/json
 
 {
@@ -57,4 +50,10 @@ Content-Type: application/json
             "quantidade": 1
         }
     ]
-} 
+}
+
+###
+
+//Relatório de faturamento(soma do lucro dos pedidos finalizados)
+
+GET http://localhost:3000/api/pedidos/relatorio

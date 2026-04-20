@@ -12,9 +12,9 @@ POST http://localhost:3000/api/produtos
 Content-Type: application/json
 
 {
-    "nome":"Café cuado",
-    "preco": "2.50",
-    "estoque": 20
+    "nome":"Cappuccino",
+    "preco": "6.00",
+    "estoque": 19
 }
 
 ###
